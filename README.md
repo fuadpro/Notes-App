@@ -9,9 +9,13 @@ git clone https://github.com/
 ```bash
 npm i
 ```
-# or
+or
 ```bash
 npm install
+```
+## Create .env file and enter PORT
+```bash
+PORT=3000
 ```
 
 ## Run Notes APP
