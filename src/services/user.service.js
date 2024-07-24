@@ -4,7 +4,7 @@ const createUser = async (params) => {
 
     const { username, password} = params;
 
-    let existUser = await findUserByUsername(username)
+    let existUser = await findByUsername(username)
 
     if(existUser) throw new Error('User already exists');
 
@@ -16,7 +16,7 @@ const createUser = async (params) => {
     return user;
 };
 
-const findUserByUsername = async (username) => {
+const findByUsername = async (username) => {
     let user = await User.findOne({where : {username}})
     return user;
 }
@@ -26,8 +26,44 @@ const findAllUsers = async () => {
     return users;
 };
 
+const findById = async (id) => {
+    let user = await User.findByPk(id); 
+    return user;
+};
+
+const updateUser = async (id, params) => {
+    const { username, password } = params;
+
+    let user = await User.findByPk(id);
+
+    if (!user) {
+        throw new Error('User not found');
+    }
+
+    user.username = username || user.username;
+    user.password = password || user.password;
+
+    await user.save();
+
+    return user;
+};
+
+const deleteUser = async (id) => {
+    let user = await User.findByPk(id);
+    if (!user) {
+        throw new Error('User not found');
+    }
+
+    await user.destroy();
+
+    return { message: 'User deleted successfully' };
+};
+
 module.exports = {
     createUser,
-    findUserByUsername,
-    findAllUsers
+    findByUsername,
+    findAllUsers,
+    findById,
+    updateUser,
+    deleteUser,
 }
